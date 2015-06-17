@@ -1,0 +1,94 @@
+\ProvidesPackage{cv-heb-bob-plaintext}
+% Template for a CV in Hebrew.
+% First three lines are basic properties of the document. Most important are the localizations for Israel (a4paper and all that Hebrew stuff)
+% Shamelessly copied from LyX output.
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[latin9,cp1255]{inputenc}
+% I use verbatim to comment out entire sections of the CV
+\RequirePackage{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands. (probably redundant)
+\makeatletter
+\RequirePackage{theorem}
+\theorembodyfont{\upshape}
+\newtheorem{theorem}{\R{משפט}}[section]
+\AtBeginDocument{\make@lr\thetheorem}
+\makeatother
+\RequirePackage{babel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+
+% use a vertical skip between paragraphs instead of indentation	
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+
+\newcommand{\cvitem}[4]
+{
+% defines item in cv
+% #1 = What I did (e.g. bacteria farmer)
+% #2 = Where I did it  (e.g. Titan Baceria Farms)
+% #3 = When I did it (e.g. 3045-3046) (Dont forget to use \L, \beginL endL, or \lll for numbers)
+% #4 = Short description, a few sentences.
+
+#3 :: #2 | #1
+\\#4
+
+%	Preventing indentation, even though I set it to zero in the preamble. Maybe remove.
+%	\par\noindent
+%	\medskip
+%	\ignorespacesafterend
+}
+
+\newcommand{\cvgeneral}[2]
+% This is an item in the CV that doesn't have the structure of a job or study period
+% i.e. there are no years or institution (for examle - programming lanuages)
+% #1 = Title - Shown in bold
+% #2 = Contents - not bold, can be empty
+{	\noindent
+	-- #1 --
+	\\#2
+	\par
+}
+
+\newenvironment{vlist}[1]
+{
+	-- #1 --\\
+}
+
+\newenvironment{cvsection}[1]
+% A section in the CV (education, work experience, etc.)
+% The parameter (#1) is the title of the section
+{-- #1 --}
+{
+	%\vspace{12pt}
+	%\begin{center}
+	
+	- - - - - -
+	
+	%\end{center}
+	%\ignorespacesafterend
+}
+
+%Shorthand for writing the long name for Technion - IIT
+\newcommand{\technion}{הטכניון -- מכון טכנולוגי לישראל}
+
+% I'm making this macro because using \L produces different results from \beingL and \endL, but the latter is just too long to keep repeating.
+\newcommand{\lll}[1]{\beginL#1\endL}
+
+\newcommand{\cvtitle}[3]{
+% Make the CV title
+% The proper way to do this would be to reconfigure what \makettle uses, but I'm lazy
+% #1 = name
+% #2 = email
+% #3 = telephone #
+	\begin{cvsection}{#1}
+		\\\texttt{#2}
+		%\url{#2} %hyperref isn't playing nice. I don't know why.
+		\\#3
+	\end{cvsection}
+}
+
+
+
+\endinput

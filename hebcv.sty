@@ -1,0 +1,130 @@
+\ProvidesPackage{hebcv}
+% Template for a CV in Hebrew.
+
+% First three lines are basic properties of the document. Most important are the localizations for Israel (a4paper and all that Hebrew stuff)
+% Shamelessly copied from LyX output.
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[latin9,cp1255]{inputenc}
+
+% I use hyperref for the email link
+% Right now I can't get it to work
+%\RequirePackage{hyperref}
+
+% I use soul to make prettier titles for sections.
+% Also not working :(
+%\RequirePackage{soul}
+
+% I use verbatim to comment out entire sections of the CV
+\RequirePackage{verbatim}
+
+% I use anysize to make margins smaller, because we want to fit everything in one page.
+\RequirePackage{anysize}
+\marginsize{1cm}{1cm}{0cm}{0cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands. (probably redundant)
+\makeatletter
+\RequirePackage{theorem}
+\theorembodyfont{\upshape}
+\newtheorem{theorem}{\R{משפט}}[section]
+\AtBeginDocument{\make@lr\thetheorem}
+\makeatother
+\RequirePackage{babel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+
+% use a vertical skip between paragraphs instead of indentation	
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+
+\newcommand{\cvitem}[4]
+{
+% defines item in cv
+% #1 = What I did (e.g. bacteria farmer)
+% #2 = Where I did it  (e.g. Titan Baceria Farms)
+% #3 = When I did it (e.g. 3045-3046) (Dont forget to use \L, \beginL endL, or \lll for numbers)
+% #4 = Short description, a few sentences.
+
+%	This version prints "When" in the same row as "What" and "Where" on the left side of the page
+%	\noindent#2, \textbf{#1} \hfill #3\\
+%	\noindent#4
+
+%	This one uses minipages to make the classic CV style common in Israel, with the years
+%	printed in something that looks like a right margin.
+	\begin{minipage}[t]{0.1\textwidth}
+	\textbf{#3}
+	\end{minipage}
+	\begin{minipage}[t]{0.899\textwidth}
+	#2
+	| \textbf{#1}\\\noindent#4
+	\end{minipage}
+
+%	Preventing indentation, even though I set it to zero in the preamble. Maybe remove.
+	\par\noindent
+	\medskip
+	\ignorespacesafterend
+}
+
+\newcommand{\cvgeneral}[2]
+% This is an item in the CV that doesn't have the structure of a job or study period
+% i.e. there are no years or institution (for examle - programming lanuages)
+% #1 = Title - Shown in bold
+% #2 = Contents - not bold, can be empty
+{	\noindent
+	\textbf{#1}
+	\begin{minipage}[t]{.7\linewidth}
+	#2
+	\end{minipage}
+	
+	\vspace{6pt}
+	%\ignorespacesafterend
+}
+
+\newenvironment{vlist}[1]
+{
+	\begin{mbox}
+	\begin{minipage}[t]{0.1\textwidth}
+	\textbf{#1}
+	\end{minipage}
+	\begin{minipage}[t]{0.32\textwidth}
+}
+{\end{minipage}\end{mbox}}
+
+\newenvironment{cvsection}[1]
+% A section in the CV (education, work experience, etc.)
+% The parameter (#1) is the title of the section
+{\noindent\large#1\normalsize}
+{
+	%\vspace{12pt}
+	%\begin{center}
+	\rule[-\medskipamount]{1\columnwidth}{.5pt}
+	\medskip
+	%\end{center}
+	%\ignorespacesafterend
+}
+
+%Shorthand for writing the long name for Technion - IIT
+\newcommand{\technion}{הטכניון -- מכון טכנולוגי לישראל}
+
+% I'm making this macro because using \L produces different results from \beingL and \endL, but the latter is just too long to keep repeating.
+\newcommand{\lll}[1]{\beginL#1\endL}
+
+\newcommand{\cvtitle}[3]{
+% Make the CV title
+% The proper way to do this would be to reconfigure what \makettle uses, but I'm lazy
+% #1 = name
+% #2 = email
+% #3 = telephone #
+	\vspace{-20pt}
+	\begin{center}
+	\vspace{-20pt}
+	\begin{cvsection}{\LARGE {#1}}
+		\\\texttt{#2}
+		%\url{#2} %hyperref isn't playing nice. I don't know why.
+		\\#3
+	\end{cvsection}
+	\end{center}
+	\vspace{-20pt}
+}
+
+\endinput
